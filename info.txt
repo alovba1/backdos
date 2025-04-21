@@ -1,0 +1,3 @@
+funciona test unitarios
+se genero pipeline en Jenkins exitoso
+y genera el al imagen y el contendor en dockerhub
