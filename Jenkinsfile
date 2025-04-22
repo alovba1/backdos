@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     stages {
-      
-
         stage('Setup Node.js Environment') {
             steps {
                 withEnv(["PATH=C:\\Program Files\\nodejs;${env.PATH}"]) {
@@ -27,10 +25,18 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build & Push Docker Image') {
             steps {
-                bat 'docker build -t backend-image .'
-                bat 'docker run -d -p 3000:3000 --name backend-container backend-image'
+                bat 'docker build -t Albert1w22/backdos .'
+                bat 'docker tag Albert1w22/backdos tu_usuario/dockerhub:backdos-latest'
+                bat 'docker push Albert1w22/dockerhub:backdos-latest'
+            }
+        }
+
+        stage('Deploy in Kubernetes') {
+            steps {
+                bat 'kubectl apply -f backend-deployment.yaml'
+                bat 'kubectl apply -f backend-service.yaml'
             }
         }
     }
