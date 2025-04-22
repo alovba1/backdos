@@ -28,8 +28,11 @@ pipeline {
         stage('Build & Push Docker Image') {
             steps {
                 bat 'docker build -t Albert1w22/backdos .'
-                bat 'docker tag Albert1w22/backdos tu_usuario/dockerhub:backdos-latest'
-                bat 'docker push Albert1w22/dockerhub:backdos-latest'
+                bat 'docker tag Albert1w22/backdos Albert1w22/backdos:latest'
+                bat 'docker tag Albert1w22/backdos Albert1w22/backdos:v1.0'
+                bat 'docker login -u Albert1w22 -p GUHM3F4msq*hf2#'
+                bat 'docker push Albert1w22/backdos:latest'
+                bat 'docker push Albert1w22/backdos:v1.0'
             }
         }
 
