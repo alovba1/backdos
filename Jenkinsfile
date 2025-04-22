@@ -30,7 +30,7 @@ pipeline {
                 bat 'docker build -t Albert1w22/backdos .'
                 bat 'docker tag Albert1w22/backdos Albert1w22/backdos:latest'
                 bat 'docker tag Albert1w22/backdos Albert1w22/backdos:v1.0'
-                bat 'docker login -u Albert1w22 -p GUHM3F4msq*hf2#'
+                bat 'echo GUHM3F4msq*hf2# | docker login -u Albert1w22 --password-stdin'
                 bat 'docker push Albert1w22/backdos:latest'
                 bat 'docker push Albert1w22/backdos:v1.0'
             }
