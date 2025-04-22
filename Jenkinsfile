@@ -25,16 +25,22 @@ pipeline {
             }
         }
 
-        stage('Build & Push Docker Image') {
-            steps {
-                bat 'docker build -t Albert1w22/backdos .'
-                bat 'docker tag Albert1w22/backdos Albert1w22/backdos:latest'
-                bat 'docker tag Albert1w22/backdos Albert1w22/backdos:v1.0'
-                bat 'echo GUHM3F4msq*hf2# | docker login -u Albert1w22 --password-stdin'
-                bat 'docker push Albert1w22/backdos:latest'
-                bat 'docker push Albert1w22/backdos:v1.0'
-            }
+
+  stage('Build') {
+    steps {
+        bat 'docker build -t backend-image .'
+        bat 'docker tag backend-image backend-image:latest'
+
+        // Detiene y elimina el contenedor anterior si existe
+        script {
+            bat 'docker stop backend-container || echo "No hay contenedor en ejecución"'
+            bat 'docker rm backend-container || echo "No se encontró el contenedor para eliminar"'
         }
+
+        bat 'docker run -d -p 3000:3000 --name backend-container backend-image'
+    }
+}
+
 
         stage('Deploy in Kubernetes') {
             steps {
