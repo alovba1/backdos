@@ -12,9 +12,11 @@ spec:
       labels:
         app: backend
     spec:
+      imagePullSecrets:   # Agrega la referencia a Docker Hub
+      - name: dockerhub-secret  
       containers:
       - name: backend
-        image: tu_usuario/dockerhub:backend-latest
+        image: albert1w22/backend-image:latest   # Asegúrate de poner tu usuario correcto
         ports:
         - containerPort: 3000
         env:

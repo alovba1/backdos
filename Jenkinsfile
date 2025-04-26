@@ -58,8 +58,11 @@ stage('Run Tests') {
 
   stage('Build') {
     steps {
-        bat 'docker build -t backend-image .'
-        bat 'docker tag backend-image backend-image:latest'
+        withCredentials([string(credentialsId: 'dckr_pat_Gq0lpydfvVEwBOkXOss50XU6UJA', variable: 'DOCKER_PASS')]) {
+            bat 'docker login -u albert1w22 -p %DOCKER_PASS%'
+            bat 'docker build -t albert1w22/backend-image:latest .'
+            bat 'docker push albert1w22/backend-image:latest'
+        }
 
         // Detiene y elimina el contenedor anterior si existe
         script {
@@ -67,18 +70,23 @@ stage('Run Tests') {
             bat 'docker rm backend-container || echo "No se encontró el contenedor para eliminar"'
         }
 
-        bat 'docker run -d -p 3000:3000 --name backend-container backend-image'
+        // Ejecutar nuevo contenedor con la imagen correcta
+        bat 'docker run -d -p 3000:3000 --name backend-container albert1w22/backend-image:latest'
     }
 }
 
 
-        stage('Deploy in Kubernetes') {
-            steps {
-                bat 'kubectl apply -f backend-deployment.yaml'
-                bat 'kubectl apply -f backend-service.yaml'
-            }
+stage('Deploy in Kubernetes') {
+    steps {
+        withCredentials([string(credentialsId: 'dckr_pat_Gq0lpydfvVEwBOkXOss50XU6UJA', variable: 'DOCKER_PASS')]) {
+            bat 'kubectl create secret docker-registry dockerhub-secret --docker-username=albert1w22 --docker-password=%DOCKER_PASS% --docker-server=https://index.docker.io/v1/'
         }
+
+        bat 'kubectl apply -f backend-deployment.yaml'
+        bat 'kubectl apply -f backend-service.yaml'
     }
+}
+
 
     post {
         success {
