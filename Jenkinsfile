@@ -58,7 +58,7 @@ stage('Run Tests') {
 
   stage('Build') {
     steps {
-        withCredentials([string(credentialsId: 'dckr_pat_Gq0lpydfvVEwBOkXOss50XU6UJA', variable: 'DOCKER_PASS')]) {
+        withCredentials([string(credentialsId: '', variable: 'DOCKER_PASS')]) {
             bat 'docker login -u albert1w22 -p %DOCKER_PASS%'
             bat 'docker build -t albert1w22/backend-image:latest .'
             bat 'docker push albert1w22/backend-image:latest'
@@ -78,7 +78,7 @@ stage('Run Tests') {
 
 stage('Deploy in Kubernetes') {
     steps {
-        withCredentials([string(credentialsId: 'dckr_pat_Gq0lpydfvVEwBOkXOss50XU6UJA', variable: 'DOCKER_PASS')]) {
+        withCredentials([string(credentialsId: '', variable: 'DOCKER_PASS')]) {
             bat 'kubectl create secret docker-registry dockerhub-secret --docker-username=albert1w22 --docker-password=%DOCKER_PASS% --docker-server=https://index.docker.io/v1/'
         }
 
