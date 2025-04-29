@@ -71,6 +71,9 @@ pipeline {
         }
 
         stage('Deploy in Kubernetes') {
+             agent {
+            label 'kubernetes-node'
+           }
             steps {
                 withCredentials([string(credentialsId: '05677c4d-d40b-4253-995b-fcca93f27f6e', variable: 'DOCKER_PASS')]) {
                     bat 'kubectl create secret docker-registry dockerhub-secret --docker-username=albert1w22 --docker-password=%DOCKER_PASS% --docker-server=https://index.docker.io/v1/'
