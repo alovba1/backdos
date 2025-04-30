@@ -60,10 +60,11 @@ pipeline {
                 }
 
                 // Detiene y elimina el contenedor anterior si existe
-                script {
-                    bat 'docker stop backend-container || echo "No hay contenedor en ejecución"'
-                    bat 'docker rm backend-container || echo "No se encontró el contenedor para eliminar"'
-                }
+              script {
+               bat 'docker ps -q --filter name=backend-container | xargs --no-run-if-empty docker stop'
+               bat 'docker ps -aq --filter name=backend-container | xargs --no-run-if-empty docker rm'
+              }
+
 
                 // Ejecutar nuevo contenedor con la imagen correcta
                 bat 'docker run -d -p 3000:3000 --name backend-container albert1w22/backend-image:latest'
