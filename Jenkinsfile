@@ -72,7 +72,7 @@ script {
             }
         }
 
-        
+
 stage('Deploy in Kubernetes') {
     agent {
         label 'kubernetes-node'
@@ -81,10 +81,11 @@ stage('Deploy in Kubernetes') {
         withCredentials([string(credentialsId: '05677c4d-d40b-4253-995b-fcca93f27f6e', variable: 'DOCKER_PASS')]) {
             bat 'kubectl create secret docker-registry dockerhub-secret --docker-username=albert1w22 --docker-password=%DOCKER_PASS% --docker-server=https://index.docker.io/v1/'
         }
-        bat 'kubectl apply -f backend-deployment.yaml || echo "Error aplicando deployment, pero seguimos adelante"'
-        bat 'kubectl apply -f backend-service.yaml || echo "Error aplicando servicio, pero seguimos adelante"'
+        bat 'kubectl apply -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipelinebackkubernetes\\backend-deployment.yaml'
+        bat 'kubectl apply -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipelinebackkubernetes\\backend-service.yaml'
     }
 }
+
 
 
 
