@@ -60,10 +60,11 @@ pipeline {
                 }
 
                 // Detiene y elimina el contenedor anterior si existe
-            script {
-            bat 'for /f %i in (\'docker ps -q --filter name=backend-container\') do docker stop %i'
-           bat 'for /f %i in (\'docker ps -aq --filter name=backend-container\') do docker rm %i'
-           }
+          script {
+    bat 'docker ps -q --filter "name=backend-container" | findstr . && docker stop backend-container'
+    bat 'docker ps -aq --filter "name=backend-container" | findstr . && docker rm backend-container'
+}
+
 
 
                 // Ejecutar nuevo contenedor con la imagen correcta
