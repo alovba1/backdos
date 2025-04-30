@@ -72,6 +72,11 @@ script {
             }
         }
 
+        stage('Check Files') {
+    steps {
+        bat 'dir C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipelinebackkubernetes'
+    }
+}
 
 stage('Deploy in Kubernetes') {
     agent {
@@ -79,15 +84,11 @@ stage('Deploy in Kubernetes') {
     }
     steps {
         script {
-            try {
-                withCredentials([string(credentialsId: '05677c4d-d40b-4253-995b-fcca93f27f6e', variable: 'DOCKER_PASS')]) {
-                    bat 'kubectl create secret docker-registry dockerhub-secret --docker-username=albert1w22 --docker-password=%DOCKER_PASS% --docker-server=https://index.docker.io/v1/'
-                }
-                bat 'kubectl apply -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipelinebackkubernetes\\backend-deployment.yaml || echo "Error en deployment, pero seguimos adelante"'
-                bat 'kubectl apply -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipelinebackkubernetes\\backend-service.yaml || echo "Error en servicio, pero seguimos adelante"'
-            } catch (Exception e) {
-                echo "Se produjo un error en Kubernetes: ${e}"
+            withCredentials([string(credentialsId: '05677c4d-d40b-4253-995b-fcca93f27f6e', variable: 'DOCKER_PASS')]) {
+                bat 'kubectl create secret docker-registry dockerhub-secret --docker-username=albert1w22 --docker-password=%DOCKER_PASS% --docker-server=https://index.docker.io/v1/'
             }
+            bat 'kubectl apply -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipelinebackkubernetes\\backend-deployment.yaml || echo "Error en deployment, pero seguimos adelante"'
+            bat 'kubectl apply -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipelinebackkubernetes\\backend-service.yaml || echo "Error en servicio, pero seguimos adelante"'
         }
     }
 }
