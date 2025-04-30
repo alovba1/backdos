@@ -60,9 +60,9 @@ pipeline {
                 }
 
                 // Detiene y elimina el contenedor anterior si existe
-          script {
-    bat 'docker ps -q --filter "name=backend-container" | findstr . && docker stop backend-container'
-    bat 'docker ps -aq --filter "name=backend-container" | findstr . && docker rm backend-container'
+script {
+    bat 'docker ps -q --filter "name=backend-container" | findstr . && docker stop backend-container || echo "No hay contenedor para detener"'
+    bat 'docker ps -aq --filter "name=backend-container" | findstr . && docker rm backend-container || echo "No hay contenedor para eliminar"'
 }
 
 
