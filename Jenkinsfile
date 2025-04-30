@@ -72,10 +72,7 @@ pipeline {
             }
         }
 
-       stage('Deploy in Kubernetes') {
-    when {
-        always()
-    }
+ stage('Deploy in Kubernetes') {
     agent {
         label 'kubernetes-node'
     }
@@ -87,6 +84,7 @@ pipeline {
         bat 'kubectl apply -f backend-service.yaml'
     }
 }
+
 
     }
 
